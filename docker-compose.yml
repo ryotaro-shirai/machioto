@@ -1,0 +1,54 @@
+version: "3"
+
+services:
+  machioto-mysql:
+    container_name: machioto-mysql
+    image: mysql:8.0
+    environment:
+      TZ: Asia/Tokyo
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - 3307:3306
+    env_file:
+      - .env
+    networks:
+      app_net:
+        ipv4_address: '172.20.0.2'
+
+  machioto-backend:
+    container_name: machioto-backend
+    build: ./backend/
+    image: machioto-backend
+    command: bundle exec rails server -b 0.0.0.0
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./backend:/app:cached
+      - bundle_data:/usr/local/bundle:cached
+      - /app/vendor
+      - /app/tmp
+      - /app/log
+      - /app/.git
+    env_file:
+      - .env
+    depends_on:
+      - machioto-mysql
+    ports:
+      - 4000:3000 # ポートフォワード
+    networks:
+      app_net:
+        ipv4_address: '172.20.0.3'
+
+networks:
+  app_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.20.0.0/24
+
+volumes:
+  mysql_data:
+  bundle_data:
+  node_modules:
