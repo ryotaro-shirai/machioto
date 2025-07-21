@@ -10,11 +10,36 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_21_094425) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_21_100017) do
   create_table "categories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "events", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name"
+    t.bigint "group_id", null: false
+    t.datetime "open_at"
+    t.datetime "start_at"
+    t.datetime "end_at"
+    t.string "venue_name"
+    t.string "venue_address"
+    t.string "venue_url"
+    t.bigint "category_id", null: false
+    t.string "cover_image_path"
+    t.text "event_description"
+    t.text "artist_description"
+    t.text "note"
+    t.text "contact_detail"
+    t.boolean "is_paid"
+    t.integer "price"
+    t.boolean "is_application_required"
+    t.text "application_instruction"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_events_on_category_id"
+    t.index ["group_id"], name: "index_events_on_group_id"
   end
 
   create_table "groups", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -28,4 +53,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_21_094425) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_foreign_key "events", "categories"
+  add_foreign_key "events", "groups"
 end
