@@ -10,9 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_21_065135) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_21_094425) do
   create_table "categories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "groups", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.string "locate"
+    t.string "group_path"
+    t.string "video_url"
+    t.string "logo_image_path"
+    t.string "cover_image_path"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
